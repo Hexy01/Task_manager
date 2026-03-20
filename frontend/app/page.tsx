@@ -1,11 +1,23 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#2C2C2C] text-[#F3F4F4] flex flex-col items-center justify-center text-center px-4">
       
       {/* Hero */}
-      <h1 className="text-5xl font-bold mb-4 text-[#F3F4F4]">
+      <h1 className="text-5xl font-bold mb-4">
         Organize Your Life 📝
       </h1>
 
@@ -13,14 +25,24 @@ export default function Home() {
         A simple and beautiful task manager to keep your work and life on track.
       </p>
 
+      {/* 👋 Logged-in Greeting (nice touch) */}
+      {user && (
+        <p className="text-sm text-[#D2C4B4] mb-4">
+          Welcome {user.username} 👋
+        </p>
+      )}
+
       {/* Buttons */}
       <div className="flex gap-4">
-        <Link href="/login">
+        
+        {/* 🔥 Dynamic Button */}
+        <Link href={user ? "/dashboard" : "/login"}>
           <button className="px-6 py-3 bg-[#853953] hover:bg-[#612D53] text-white rounded-xl transition">
-            Get Started
+            {user ? "Go to Dashboard" : "Get Started"}
           </button>
         </Link>
 
+        {/* Secondary Button */}
         <Link href="/dashboard">
           <button className="px-6 py-3 border border-[#853953] text-[#F3F4F4] rounded-xl hover:bg-[#853953] transition">
             View Tasks

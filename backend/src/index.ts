@@ -7,11 +7,13 @@ dotenv.config();
 
 const app = express();
 
+app.use(express.json()); // ✅ MUST BE FIRST
+
 app.use(cors({
   origin: "http://localhost:3000",
 }));
-app.use("/auth", authRoutes);
-app.use(express.json());
+
+app.use("/api/auth", authRoutes); // ✅ matches frontend
 
 app.get("/", (req, res) => {
   res.send("API is running 🚀");
